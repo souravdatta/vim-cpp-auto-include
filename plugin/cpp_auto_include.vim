@@ -87,7 +87,7 @@ module CppAutoInclude
     ['cstdio',         false, true , R[F['s?scanf', 'puts', 's?printf', 'f?gets', '(?:get|put)char', 'getc'], C['FILE','std(?:in|out|err)','EOF']] ],
     ['cassert',        false, true , R[F['assert']] ],
     ['cstring',        false, true , R[F['mem(?:cpy|set|n?cmp)', 'str(?:len|n?cmp|n?cpy|error|cat|str|chr)']] ],
-    ['cstdlib',        false, true , R[F['system','abs','ato[if]', 'itoa', 'strto[dflu]+','free','exit','l?abs','s?rand(?:_r|om)?','qsort'], C['EXIT_[A-Z]*', 'NULL']] ],
+    ['cstdlib',        false, true , R[F['system','abs','ato[if]', 'itoa', 'strto[dflu]+','free','exit','l?abs','s?rand(?:_r|om)?','qsort', '(get|set)env'], C['EXIT_[A-Z]*', 'NULL']] ],
     ['cmath',          false, true , R[F['pow[fl]?','a?(?:sin|cos|tan)[hl]*', 'atan2[fl]?', 'exp[m12fl]*', 'fabs[fl]?', 'log[210fl]+', 'nan[fl]?', '(?:ceil|floor)[fl]?', 'l?l?round[fl]?', 'sqrt[fl]?'], C['M_[A-Z24_]*', 'NAN', 'INFINITY', 'HUGE_[A-Z]*']] ],
     ['strings.h',      false, true , R[F['b(?:cmp|copy|zero)', 'strn?casecmp']] ],
     ['typeinfo',       false, true , R[C['typeid']] ],
@@ -141,7 +141,6 @@ module CppAutoInclude
         HEADER_STD_COMPLETE_REGEX.each do |header, std, complete, regex|
           has_header  = includes.detect { |l| l.first.include? "<#{header}>" }
           has_keyword = (has_header && !complete) || (content =~ regex)
-          use_std ||= std && has_keyword
 
           if has_keyword && !has_header
             VIM::append(includes.last.last, "#include <#{header}>")
